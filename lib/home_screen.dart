@@ -1,15 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+
+  const HomeScreen({ super.key });
+
+  @override
+  State<HomeScreen> createState () => _HomeScreen();
+}
+
+class _HomeScreen extends State<HomeScreen> {
+
+  double initVal = 0;
 
   @override
   Widget build(BuildContext context) {
 
-    print('running');
     TextEditingController textController = TextEditingController();
-    double initVal = 0;
 
     final textFieldBorder = OutlineInputBorder(
       borderSide: const BorderSide(
@@ -28,7 +35,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.all(10),
               child: Text(
-                initVal.toString(),
+                'INR ${(initVal != 0) ? initVal.toStringAsFixed(2) : initVal.toStringAsFixed(0)}',
                 style: const TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.bold,
@@ -39,6 +46,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: TextField(
+                keyboardType: TextInputType.number,
                 controller: textController,
                 style: const TextStyle(
                   color: Colors.black,
@@ -64,8 +72,9 @@ class HomeScreen extends StatelessWidget {
                     if (kDebugMode) {
                       // run when app is in debug mode
                       print('Button Clicked');
-                      initVal = double.parse(textController.text);
-                      build(context);
+                      setState(() {
+                        initVal = double.parse(textController.text) * 80;
+                      });
                     }
                   },
                   style: ElevatedButton.styleFrom(
