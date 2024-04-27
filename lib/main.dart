@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:resu_maker/provider/resume_provider.dart';
+import 'package:resu_maker/provider/textfield_provider.dart';
 import 'package:resu_maker/screens/home_screen.dart';
 
 void main() async{
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ResumeProvider())
+        ChangeNotifierProvider(create: (context) => ResumeProvider()),
+        ChangeNotifierProvider(create: (context) => TextFieldProvider())
       ],
       child: MaterialApp(
         theme: ThemeData(

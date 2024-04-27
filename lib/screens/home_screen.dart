@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:resu_maker/provider/resume_provider.dart';
-import 'package:resu_maker/screens/form_screen.dart';
+import 'package:resu_maker/screens/personal_info.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return FormScreen(type: 'add', id: id);
+                            return PersonalInfo(type: 'add', id: id);
                           },
                         ),
                       );
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const FormScreen(type: 'add', id: 1);
+                          return const PersonalInfo(type: 'add', id: 1);
                         },
                       ),
                     );
