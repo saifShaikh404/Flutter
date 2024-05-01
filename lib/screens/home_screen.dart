@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return const PersonalInfo(type: 'add', id: 1);
+                          return PersonalInfo(type: 'add', id: 1);
                         },
                       ),
                     );

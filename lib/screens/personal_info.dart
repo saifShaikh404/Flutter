@@ -1,54 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:resu_maker/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:resu_maker/provider/textfield_provider.dart';
+import 'package:resu_maker/widgets/textfield_widget.dart';
 
-class PersonalInfo extends StatelessWidget {
-  final type;
-  final id;
+class PersonalInfo extends StatefulWidget {
+  final String type;
+  final int id;
+  const PersonalInfo({super.key, required this.type, required this.id});
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController mobileController = TextEditingController();
-  TextEditingController dobController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController stateController = TextEditingController();
-  TextEditingController pincodeController = TextEditingController();
-  TextEditingController nationalityController = TextEditingController();
+  @override
+  State<PersonalInfo> createState() => _PersonalInfo();
+}
 
-  const PersonalInfo({super.key, this.type, this.id});
+class _PersonalInfo extends State<PersonalInfo> {
+  late TextEditingController nameController;
+  late TextEditingController emailController;
+  late TextEditingController mobileController;
+  late TextEditingController dobController;
+  late TextEditingController addressController;
+  late TextEditingController cityController;
+  late TextEditingController stateController;
+  late TextEditingController pincodeController;
+  late TextEditingController nationalityController;
+
+  String? _selectedGender = 'Male';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    nameController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).name);
+    emailController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).email);
+    mobileController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).mobile != null ? (Provider.of<TextFieldProvider>(context).mobile).toString() : "0");
+    dobController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).dob);
+    addressController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).address);
+    cityController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).city);
+    stateController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).state);
+    pincodeController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).pincode);
+    nationalityController = TextEditingController(
+        text: Provider.of<TextFieldProvider>(context).nationality);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    mobileController.dispose();
+    dobController.dispose();
+    addressController.dispose();
+    cityController.dispose();
+    stateController.dispose();
+    pincodeController.dispose();
+    nationalityController.dispose();
+    super.dispose();
+  }
+
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1900),
+        lastDate: DateTime.now());
+
+    if (picked != null && picked != selectedDate){
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    if(type == 'edit'){
-      String initName = context.read<TextFieldProvider>().name;
-      String initEmail = context.read<TextFieldProvider>().email;
-      int initMobile = context.read<TextFieldProvider>().mobile;
-      String initDob = context.read<TextFieldProvider>().dob;
-      String initAddress = context.read<TextFieldProvider>().address;
-      String initCity = context.read<TextFieldProvider>().city;
-      String initState = context.read<TextFieldProvider>().state;
-      String initPincode = context.read<TextFieldProvider>().pincode;
-      String initNationality = context.read<TextFieldProvider>().nationality;
-    } else {
-      String initName = context.read<TextFieldProvider>().name;
-      String initEmail = context.read<TextFieldProvider>().email;
-      int initMobile = context.read<TextFieldProvider>().mobile;
-      String initDob = context.read<TextFieldProvider>().dob;
-      String initAddress = context.read<TextFieldProvider>().address;
-      String initCity = context.read<TextFieldProvider>().city;
-      String initState = context.read<TextFieldProvider>().state;
-      String initPincode = context.read<TextFieldProvider>().pincode;
-      String initNationality = context.read<TextFieldProvider>().nationality;
-    }
+    
+    const List<String> gender = ['Male', 'Female', 'Other'];
 
     Size screenSize = MediaQuery.of(context).size;
     double maxHeight = screenSize.height;
     double maxWidth = screenSize.width;
 
     return Scaffold(
+      // resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -60,7 +105,7 @@ class PersonalInfo extends StatelessWidget {
           color: Colors.white, // Set your desired color here
         ),
         title: const Text(
-          'Add Profile',
+          'Personal Info',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -73,13 +118,50 @@ class PersonalInfo extends StatelessWidget {
             vertical: maxHeight * 0.03, horizontal: maxWidth * 0.05),
         child: ListView(
           children: [
-            TextField(
-              style: Theme.of(context).textTheme.bodySmall,
-              decoration: InputDecoration(
-                labelText: 'Profile Name',
-                labelStyle: Theme.of(context).textTheme.bodySmall,
+            TextFieldWidget(label: 'Name', controller: nameController),
+            TextFieldWidget(label: 'Email', controller: emailController),
+            TextFieldWidget(label: 'Mobile', controller: mobileController),
+            TextFieldWidget(label: 'Address', controller: addressController),
+            TextFieldWidget(label: 'City', controller: cityController),
+            TextFieldWidget(label: 'State', controller: stateController),
+
+            Container(
+              decoration: const BoxDecoration(
+                border: BorderDirectional(
+                  bottom: BorderSide(width: 1),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("${selectedDate.toLocal()}".split(' ')[0]),
+                  IconButton(
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                    icon: const Icon(Icons.date_range),
+                  )
+                ],
               ),
             ),
+
+            DropdownButton<String>(
+              value: _selectedGender,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedGender = newValue;
+                });
+              },
+              items: gender.map((String item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item),
+                );
+              }).toList(),
+            ),
+            
+            TextFieldWidget(label: 'Pincode', controller: pincodeController),
+            TextFieldWidget(label: 'Country', controller: nationalityController),
           ],
         ),
       ),

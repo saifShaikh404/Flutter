@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 class TextFieldProvider extends ChangeNotifier {
 
   // phase 1 - Personal info
-  String? name = '';
-  String? email = '';
+  String name = '';
+  String email = '';
   int? mobile;
-  String? dob = '';
-  String? address = '';
-  String? city = '';
-  String? state = '';
-  String? pincode = '';
-  String? nationality = '';
+  String dob = '';
+  String address = '';
+  String city = '';
+  String state = '';
+  String pincode = '';
+  String nationality = '';
 
   // phase 2 - Summary
-  String? heading = '';
-  String? summary = '';
+  String heading = '';
+  String summary = '';
 
   // phase 3 - Career
   String? careerObjective = '';
@@ -47,4 +47,4 @@ class TextFieldProvider extends ChangeNotifier {
     projects = [];
   }
 
-};
+}
