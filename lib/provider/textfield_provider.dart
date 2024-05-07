@@ -14,8 +14,8 @@ class TextFieldProvider extends ChangeNotifier {
   String nationality = '';
 
   // phase 2 - Summary
-  String heading = '';
   String summary = '';
+  String heading = '';
 
   // phase 3 - Career
   String? careerObjective = '';
